@@ -34,7 +34,7 @@ this.tablecloth = function(){
 	
 	var tableover = false;
 	this.start = function(){
-		var tables = document.getElementsByTagName("table");
+		var tables = document.getElementsByClassName("tablecloth");
 		for (var i=0;i<tables.length;i++){
 			tables[i].onmouseover = function(){tableover = true};
 			tables[i].onmouseout = function(){tableover = false};			
@@ -160,7 +160,7 @@ this.tablecloth = function(){
 	};
 	this.unselectAll = function(){
 		if(!tableover){
-			tables = document.getElementsByTagName("table");
+			tables = document.getElementsByClassName("tablecloth");
 			for (var i=0;i<tables.length;i++){
 				unselect(tables[i])
 			};		
