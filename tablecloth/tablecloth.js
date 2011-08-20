@@ -1,47 +1,47 @@
-/* 
+/*
 
-	Tablecloth 
+	Tablecloth
 	written by Alen Grakalic, provided by Css Globe (cssglobe.com)
 	please visit http://cssglobe.com/lab/tablecloth/
-	
+
 */
 
 this.tablecloth = function(){
-	
-	// CONFIG 
-	
+
+	// CONFIG
+
 	// if set to true then mouseover a table cell will highlight entire column (except sibling headings)
 	var highlightCols = true;
-	
+
 	// if set to true then mouseover a table cell will highlight entire row	(except sibling headings)
-	var highlightRows = false;	
-	
+	var highlightRows = false;
+
 	// if set to true then click on a table sell will select row or column based on config
 	var selectable = true;
-	
-	// this function is called when 
-	// add your own code if you want to add action 
-	// function receives object that has been clicked 
+
+	// this function is called when
+	// add your own code if you want to add action
+	// function receives object that has been clicked
 	this.clickAction = function(obj){
 		//alert(obj.innerHTML);
-		
+
 	};
 
 
-	
+
 	// END CONFIG (do not edit below this line)
-	
-	
+
+
 	var tableover = false;
 	this.start = function(){
 		var tables = document.getElementsByClassName("tablecloth");
 		for (var i=0;i<tables.length;i++){
 			tables[i].onmouseover = function(){tableover = true};
-			tables[i].onmouseout = function(){tableover = false};			
+			tables[i].onmouseout = function(){tableover = false};
 			rows(tables[i]);
 		};
 	};
-	
+
 	this.rows = function(table){
 		var css = "";
 		var tr = table.getElementsByTagName("tr");
@@ -49,13 +49,13 @@ this.tablecloth = function(){
 			css = (css == "odd") ? "even" : "odd";
 			tr[i].className = css;
 			var arr = new Array();
-			for(var j=0;j<tr[i].childNodes.length;j++){				
+			for(var j=0;j<tr[i].childNodes.length;j++){
 				if(tr[i].childNodes[j].nodeType == 1) arr.push(tr[i].childNodes[j]);
-			};		
-			for (var j=0;j<arr.length;j++){				
+			};
+			for (var j=0;j<arr.length;j++){
 				arr[j].row = i;
 				arr[j].col = j;
-				if(arr[j].innerHTML == "&nbsp;" || arr[j].innerHTML == "") arr[j].className += " empty";					
+				if(arr[j].innerHTML == "&nbsp;" || arr[j].innerHTML == "") arr[j].className += " empty";
 				arr[j].css = arr[j].className;
 				arr[j].onmouseover = function(){
 					over(table,this,this.row,this.col);
@@ -68,92 +68,92 @@ this.tablecloth = function(){
 				};
 				arr[j].onmouseup = function(){
 					up(table,this,this.row,this.col);
-				};				
+				};
 				arr[j].onclick = function(){
 					click(table,this,this.row,this.col);
-				};								
+				};
 			};
 		};
 	};
-	
+
 	// appyling mouseover state for objects (th or td)
 	this.over = function(table,obj,row,col){
-		if (!highlightCols && !highlightRows) obj.className = obj.css + " over";  
+		if (!highlightCols && !highlightRows) obj.className = obj.css + " over";
 		if(check1(obj,col)){
 			if(highlightCols) highlightCol(table,obj,col);
-			if(highlightRows) highlightRow(table,obj,row);		
+			if(highlightRows) highlightRow(table,obj,row);
 		};
 	};
-	// appyling mouseout state for objects (th or td)	
+	// appyling mouseout state for objects (th or td)
 	this.out = function(table,obj,row,col){
-		if (!highlightCols && !highlightRows) obj.className = obj.css; 
+		if (!highlightCols && !highlightRows) obj.className = obj.css;
 		unhighlightCol(table,col);
 		unhighlightRow(table,row);
 	};
-	// appyling mousedown state for objects (th or td)	
+	// appyling mousedown state for objects (th or td)
 	this.down = function(table,obj,row,col){
-		obj.className = obj.css + " down";  
+		obj.className = obj.css + " down";
 	};
-	// appyling mouseup state for objects (th or td)	
+	// appyling mouseup state for objects (th or td)
 	this.up = function(table,obj,row,col){
-		obj.className = obj.css + " over";  
-	};	
-	// onclick event for objects (th or td)	
+		obj.className = obj.css + " over";
+	};
+	// onclick event for objects (th or td)
 	this.click = function(table,obj,row,col){
 		if(check1){
 			if(selectable) {
-				unselect(table);	
+				unselect(table);
 				if(highlightCols) highlightCol(table,obj,col,true);
 				if(highlightRows) highlightRow(table,obj,row,true);
 				document.onclick = unselectAll;
 			}
 		};
-		clickAction(obj); 		
-	};		
-	
+		clickAction(obj);
+	};
+
 	this.highlightCol = function(table,active,col,sel){
 		var css = (typeof(sel) != "undefined") ? "selected" : "over";
 		var tr = table.getElementsByTagName("tr");
-		for (var i=0;i<tr.length;i++){	
+		for (var i=0;i<tr.length;i++){
 			var arr = new Array();
-			for(j=0;j<tr[i].childNodes.length;j++){				
+			for(j=0;j<tr[i].childNodes.length;j++){
 				if(tr[i].childNodes[j].nodeType == 1) arr.push(tr[i].childNodes[j]);
-			};							
+			};
 			var obj = arr[col];
-			if (check2(active,obj) && check3(obj)) obj.className = obj.css + " " + css; 		
+			if (check2(active,obj) && check3(obj)) obj.className = obj.css + " " + css;
 		};
 	};
 	this.unhighlightCol = function(table,col){
 		var tr = table.getElementsByTagName("tr");
 		for (var i=0;i<tr.length;i++){
 			var arr = new Array();
-			for(j=0;j<tr[i].childNodes.length;j++){				
+			for(j=0;j<tr[i].childNodes.length;j++){
 				if(tr[i].childNodes[j].nodeType == 1) arr.push(tr[i].childNodes[j])
-			};				
+			};
 			var obj = arr[col];
-			if(check3(obj)) obj.className = obj.css; 
+			if(check3(obj)) obj.className = obj.css;
 		};
-	};	
+	};
 	this.highlightRow = function(table,active,row,sel){
 		var css = (typeof(sel) != "undefined") ? "selected" : "over";
-		var tr = table.getElementsByTagName("tr")[row];		
-		for (var i=0;i<tr.childNodes.length;i++){		
+		var tr = table.getElementsByTagName("tr")[row];
+		for (var i=0;i<tr.childNodes.length;i++){
 			var obj = tr.childNodes[i];
-			if (check2(active,obj) && check3(obj)) obj.className = obj.css + " " + css; 		
+			if (check2(active,obj) && check3(obj)) obj.className = obj.css + " " + css;
 		};
 	};
 	this.unhighlightRow = function(table,row){
-		var tr = table.getElementsByTagName("tr")[row];		
+		var tr = table.getElementsByTagName("tr")[row];
 		for (var i=0;i<tr.childNodes.length;i++){
-			var obj = tr.childNodes[i];			
-			if(check3(obj)) obj.className = obj.css; 			
+			var obj = tr.childNodes[i];
+			if(check3(obj)) obj.className = obj.css;
 		};
 	};
 	this.unselect = function(table){
 		tr = table.getElementsByTagName("tr")
 		for (var i=0;i<tr.length;i++){
 			for (var j=0;j<tr[i].childNodes.length;j++){
-				var obj = tr[i].childNodes[j];	
+				var obj = tr[i].childNodes[j];
 				if(obj.className) obj.className = obj.className.replace("selected","");
 			};
 		};
@@ -163,21 +163,21 @@ this.tablecloth = function(){
 			tables = document.getElementsByClassName("tablecloth");
 			for (var i=0;i<tables.length;i++){
 				unselect(tables[i])
-			};		
+			};
 		};
-	};	
+	};
 	this.check1 = function(obj,col){
 		return (!(col == 0 && obj.className.indexOf("empty") != -1));
 	}
 	this.check2 = function(active,obj){
-		return (!(active.tagName == "TH" && obj.tagName == "TH")); 
+		return (!(active.tagName == "TH" && obj.tagName == "TH"));
 	};
 	this.check3 = function(obj){
-		return (obj.className) ? (obj.className.indexOf("selected") == -1) : true; 
-	};	
-	
+		return (obj.className) ? (obj.className.indexOf("selected") == -1) : true;
+	};
+
 	start();
-	
+
 };
 
 /* script initiates on page load. */
